@@ -16,8 +16,8 @@ rules:
     verbs: [create]
 
   # Application: watching & handling for the custom resource we declare.
-  - apiGroups: [example.com]
-    resources: [rans,rans/status]
+  - apiGroups: [ranoperator.example.com]
+    resources: ["*"]
     verbs: [list, watch,patch]
 
   # Application: other resources it produces and manipulates.

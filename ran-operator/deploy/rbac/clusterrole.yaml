@@ -23,8 +23,8 @@ rules:
     verbs: [create, patch]
 
   # Application: read-only access for watching cluster-wide.
-  - apiGroups: [example.com]
-    resources: [rans,rans/status]
+  - apiGroups: [ranoperator.example.com]
+    resources: ["*"]
     verbs: [list, watch,patch]
   # for controlling namespace  
   - apiGroups: [""]

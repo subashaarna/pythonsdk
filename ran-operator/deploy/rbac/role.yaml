@@ -10,7 +10,7 @@ rules:
     resources: [kopfpeerings]
     verbs: [list, watch, patch, get]
 
-  # Framework: posting the events about the handlers progress/errors.
+  # # Framework: posting the events about the handlers progress/errors.
   - apiGroups: [""]
     resources: [events]
     verbs: [create]
@@ -18,6 +18,6 @@ rules:
   # Application: watching & handling for the custom resource we declare.
   - apiGroups: [ranoperator.example.com]
     resources: ["*"]
-    verbs: [list, watch,patch]
+    verbs: [create, delete, get, list, watch,patch]
 
   # Application: other resources it produces and manipulates.

@@ -5,25 +5,321 @@ metadata:
   namespace: ran-operator
 spec:
   CustomerId:
-    tenant_id: "Default Aarna"
-    sourceSystemId: "acp-vm"
-    sourceName: "acp-vm"
-  domain: "RAN"
-  network_element: "EMS"
-  vendor: "airspan"
-  policy_type: "dayN"
-  policy_id: "301"
-  description: "Day-N config of acp"
-  logging: "enable"
+    sourceName: acp-vm
+    sourceSystemId: acp-vm
+    tenant_id: Default Aarna
+  apiuser: AARNA
+  apiuser_password: Aarna@123
+  cfg_apply_sequence:
+    dayN_cfg:
+    - nms_license: SKIP
+    - notification_subscription: SKIP
+    - ran_region: SKIP
+    - ran_site: SKIP
+    - trace_server: SKIP
+    - file_server: SKIP
+    - gnb_global_config: SKIP
+    - gnb_global_pnp_config: SKIP
+    - gnb_node_dayn: MODIFY
+    - gnb_du_dayn: MODIFY
+    - gnb_cu_dayn: MODIFY
+    - gnb_ru_dayn: MODIFY
   commit_verify: true
-  apiuser: "AARNA"
-  apiuser_password: "Aarna@123"
+  dayN_cfg:
+    file_server:
+      api:
+        name: file_server
+        version: '20.0'
+      data:
+      - password: Password
+        protocol_type: Sftp
+        server_ipaddress: 10.2.0.10
+        server_name: PM_MGMT
+        server_path: /home/sftp/pmFiles
+        user_name: sftp
+    gnb_cu_dayn:
+      api:
+        name: cu_dayN
+        operation: MODIFY
+        version: '20.0'
+      data:
+        cucp:
+          cu_cell:
+            local_cell_id: 1
+            nci: '000000011'
+          cucp_endpoint:
+            amf_ip_address:
+            - 10.2.0.164
+        cuup:
+          plmn:
+            mno_name: Tata
+          snssai:
+            sd: '000001'
+            sst: 1
+    gnb_du_dayn:
+      api:
+        name: du_dayN
+        operation: MODIFY
+        version: '20.0'
+      data:
+        du_advanced:
+          connection_control:
+            n310: '1'
+            n311: '1'
+            t300: '600'
+            t301: '600'
+            t310: '200'
+            t311: '1000'
+            t319: '200'
+          mac:
+            256qam_downlink: Disabled
+          random_access:
+            contention_based_preamble_perssb: 12
+            contention_resolution_timer: sf40
+            msg1_fdm: '1'
+            msg1_freq_start: 12
+            msg1_scs(Khz): '30'
+            msg3_maxtx_threshold: 1
+            number_rach_preambles: 30
+            power_ramping_step: '2'
+            prach_config_index: 148
+            preamble_format: B4
+            preamble_initial_received_targetpower: '-90'
+            preamble_max_transmit: '10'
+            response_win_size: s120
+            restricted_set: Unrestricted
+            root_seq_type: L139
+            rsrp_threshold_ssb: 20
+            ssbs_per_rach: '1'
+            zero_correlation_zoneconfig: 12
+          sib1:
+            default_paging_cycle: '64'
+            paging_frame_offset: '0'
+            paging_occasions_per_paging_frame: One
+            pmax: '33'
+            q_min_quality: '-30'
+            qrx_min_level: '-70'
+            qrx_min_level_sul: '-50'
+            reserved_for_operator_use: Disabled
+            sib2_periodicity: '32'
+            sib3_periodicity: '64'
+            sib4_periodicity: '64'
+            total_paging_frames: 1/16T
+          tdd_patterns:
+            flexible_slot_structure: 10D4G
+            frame_structure: 70/20/10
+        du_cell:
+          band: n78
+          bandwidth: 100
+          bandwidth_part_size: 100
+          cbrs_enable: 'False'
+          gscn: 8020
+          local_cell_id: 1
+          nci: '000000011'
+          nrarfcn: 650000
+          nrpci: 11
+          nrrsi: 13
+          nrtac: 1
+          pdcch_subcarrier_spacing: 30
+          ssb_duration: 4
+          ssb_offset: 0
+          ssb_periodicity: 20
+          ssb_subcarrier_spacing: 30
+        du_sector:
+          max_tx_power: 25
+    gnb_global_config:
+      api:
+        name: gnbGlobalConfig
+        operation: ADD
+        version: '20.0'
+      data:
+        amf:
+        - ip_address: 10.2.0.143
+          name: Druid_AMF
+          operation: ADD
+          port: 38412
+        plmn:
+        - mcc: '001'
+          mnc: '01'
+          mno_name: Tata
+          operation: ADD
+        snssai:
+        - operation: ADD
+          sd: '000001'
+          sst: 1
+    gnb_global_pnp_config:
+      api:
+        name: gnbGlobalPnpConfig
+        operation: ADD
+        version: '20.0'
+      data:
+      - description: AV1901
+        enabled: true
+        name: Tata-AIO-AV1901
+        netconf_password: 1n9R8N4r
+        netconf_timeout_secs: 5
+        netconf_username: ems-Airspan
+        prevent_pnp_without_gps: true
+        product_code: AV191-N78-DP4C1S
+        software_image_name: gnb_aio_20.00-95-1.13
+    gnb_node_dayn:
+      api:
+        name: node_dayn
+        operation: MODIFY
+        version: '20.0'
+      data:
+        advanced:
+          synchronization:
+            configured_clock_sources: GNSS
+          ue_handling:
+            max_ue_per_cell: 2
+            max_ue_per_gnb: 2
+            ue_inactivity_timer: 60
+        altitude: 519
+        description: AV1901, AIO-GNB connected with Druid 5G
+        gnb_id: 1
+        gnb_type: 32 bits
+        latitude: 18.604011
+        longitude: 73.86559
+        management:
+          fileserver_name: PM_MGMT
+          statistics:
+            cu_common:
+              drb_related_measurements: 'True'
+              mm_handover_execution_target: 'True'
+              mm_handover_performance_indicators: 'True'
+              mm_handover_preparation_target: 'True'
+              mm_intergnb_handover_execution: 'True'
+              mm_intergnb_handover_preparation: 'True'
+              mm_intragnb_handover_execution: 'True'
+              qos_flow_related_measurements: 'True'
+              rrc_connection_establishment: 'True'
+              rrc_connection_number: 'True'
+              rrc_connection_reestablishment: 'True'
+              rrc_connection_release: 'True'
+              sm_pdu_session_management: 'True'
+              ue_context_related_measurements: 'True'
+            cu_split_deployment:
+              interface_related_measurements: 'True'
+              ue_context_related_measurements: 'True'
+            daily_statistics_enabled: 'True'
+            du_common_deployment:
+              carrier_measurements: 'True'
+              drb_ue_throughput: 'True'
+              rach_measurements: 'True'
+              rru_prb_usage: 'True'
+            du_split_deployment:
+              ue_context_related_measurements: 'True'
+            granularity_period_mins: '15'
+            statistics_collection_enabled: 'True'
+        mno_name: Tata
+        node_name: BANTTN010001
+        region: region1
+        sd: '000001'
+        site: site1
+        sst: 1
+    gnb_ru_dayn:
+      api:
+        name: ru_dayN
+        operation: MODIFY
+        version: '20.0'
+      data:
+        bands: n77,n78
+        centre_frequency: 3750000
+    nms_license:
+      api:
+        name: nmsLicense
+        version: '20.0'
+      data:
+        license_files:
+        - acp-license.txt
+    notification_subscription:
+      api:
+        name: notification_subscription
+        version: '20.0'
+      data:
+        alarm_types:
+        - 100
+        - 102
+        - 109
+        - 176
+        - 177
+        - 182
+        - 193
+        - 225
+        - 226
+        - 569
+        - 633
+        - 1018
+        - 2009
+        - 5101
+        - 5102
+        - 5103
+        - 5104
+        - 5301
+        - 5302
+        - 5303
+        - 5304
+        - 5441
+        - 5442
+        - 5443
+        - 5461
+        - 5501
+        - 5701
+        - 5721
+        - 5729
+        - 5741
+        - 5742
+        - 5761
+        - 5762
+        - 5950
+        - 5951
+        event_types:
+        - PnP Node Available
+        - Node Reprovision
+        - Reset
+        - PnP Complete
+    ran_region:
+      api:
+        name: region
+        operation: ADD
+        version: '20.0'
+      data:
+      - description: Auto Discovery Region
+        name: AutoDiscoveryRegion
+    ran_site:
+      api:
+        name: site
+        operation: ADD
+        version: '20.0'
+      data:
+      - description: Auto Discovery Site
+        gps_latitude: 0
+        gps_longitude: 0
+        gps_update: false
+        name: AutoDiscoverySite
+        region_name: Auto Discovery Region
+    trace_server:
+      api:
+        name: trace_server
+        version: '20.0'
+      data:
+      - server_ipaddress: 10.2.0.10
+        server_name: TRACE_SERVER
+        target_port: 22
+  description: Day-N config of acp
+  domain: RAN
   intent_info:
-    region: "region1"
-    site:
-    - "site1"
-    - "site2"
     gnb:
-    - "F3F86B013266"
-    - "F3F86B013277"
+    - F3F86B013266
+    - F3F86B013277
+    region: region1
+    site:
+    - site1
+    - site2
+  logging: enable
+  network_element: EMS
+  policy_id: '301'
+  policy_type: dayN
+  vendor: airspan
 

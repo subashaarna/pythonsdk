@@ -26,15 +26,3 @@ rules:
   - apiGroups: [ranoperator.example.com]
     resources: ["*"]
     verbs: [list, watch,patch]
-  # for controlling namespace  
-  - apiGroups: [""]
-    resources: [namespaces]
-    verbs: [get,list, watch,patch]
-  - apiGroups: ["apps",""]
-  # for reading replicasets , deployments,statefulsets,daemonsets
-    resources: [replicasets,deployments,statefulsets,daemonsets]
-    verbs: [get,list, watch]
-  # for controlling pods  
-  - apiGroups: [""]
-    resources: [pods]
-    verbs: [list, watch,patch,create,delete,update]

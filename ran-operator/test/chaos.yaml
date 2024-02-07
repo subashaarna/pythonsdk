@@ -1,7 +1,7 @@
 apiVersion: ranoperator.example.com/v1alpha1
 kind: RanOperator
 metadata:
-  name: my-namespace
+  name: test-ran-operator
   namespace: ran-operator
 spec:
   name: example-name
@@ -9,5 +9,3 @@ spec:
   namespace: example-namespace
   replicas: 3
   # Add more fields as needed
-status:
-  code: 200
